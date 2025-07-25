@@ -39,6 +39,12 @@ return [
     'client_id' => env('GOOGLE_CLIENT_ID'),
     'client_secret' => env('GOOGLE_CLIENT_SECRET'),
     'redirect' => 'http://127.0.0.1:8000/auth/google/call-back',
+    'scopes'        => [
+        'https://www.googleapis.com/auth/calendar.readonly',
+        'https://www.googleapis.com/auth/gmail.readonly',
+        'https://www.googleapis.com/auth/tasks.readonly',
+        'openid', 'profile', 'email'
+    ],
 ],
 
 ];

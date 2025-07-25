@@ -27,17 +27,33 @@ class GoogleAuthController extends Controller
         if ($user) {
             // Update google_id if missing
             if (is_null($user->google_id)) {
-                $user->google_id = $google_user->getId();
-                $user->save();
-            }
+            $user->google_id = $google_user->getId();
+        }
+
+        // Save access token and refresh token
+        $user->google_token = json_encode([
+            'access_token' => $google_user->token,
+            'refresh_token' => $google_user->refreshToken,
+            'expires_in' => $google_user->expiresIn,
+            'created' => time()
+        ]);
+
+        $user->save();
+
 
             Auth::login($user);
         } else {
             // Create new user
             $new_user = User::create([
-                'name' => $google_user->getName(),
-                'email' => $google_user->getEmail(),
-                'google_id' => $google_user->getId()
+    'name' => $google_user->getName(),
+    'email' => $google_user->getEmail(),
+    'google_id' => $google_user->getId(),
+    'google_token' => json_encode([
+        'access_token' => $google_user->token,
+        'refresh_token' => $google_user->refreshToken,
+        'expires_in' => $google_user->expiresIn,
+        'created' => time()
+    ])
             ]);
             Auth::login($new_user);
         }
